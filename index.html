@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>김동영 | Portfolio</title>
+  <meta name="description" content="고객 사용 경험 개선을 최우선으로 생각하는 기획자 김동영의 포트폴리오입니다." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+  <style>
+    /* =========================================================
+       Design tokens
+       ========================================================= */
+    :root {
+      --bg:            #F7F5F0;
+      --bg-soft:       #FBFAF6;
+      --surface:       #FFFFFF;
+      --surface-alt:   #F1EEE6;
+      --border:        #E5E0D5;
+      --border-soft:   #EFEBE1;
+
+      --text:          #1B1B1B;
+      --text-2:        #4F4F4F;
+      --text-3:        #8A857B;
+
+      --accent:        #1F3A5F;   /* deep slate navy */
+      --accent-soft:   #2C4F7D;
+      --accent-bg:     #E8EDF3;
+      --gold:          #B08A4E;
+
+      --radius-sm: 8px;
+      --radius:    14px;
+      --radius-lg: 22px;
+
+      --shadow-sm: 0 1px 2px rgba(20, 20, 20, 0.04);
+      --shadow:    0 6px 24px rgba(20, 20, 20, 0.06);
+      --shadow-lg: 0 18px 40px rgba(20, 20, 20, 0.08);
+
+      --font-kr: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', system-ui, sans-serif;
+      --font-en: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+      --max:    1120px;
+      --pad-x:  clamp(20px, 5vw, 48px);
+      --pad-y:  clamp(64px, 9vw, 120px);
+    }
+
+    /* =========================================================
+       Reset
+       ========================================================= */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      font-family: var(--font-kr);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* =========================================================
+       Layout helpers
+       ========================================================= */
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding-left: var(--pad-x);
+      padding-right: var(--pad-x);
+    }
+    section { padding: var(--pad-y) 0; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* =========================================================
+       Navigation
+       ========================================================= */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(247, 245, 240, 0.86);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .nav.is-scrolled {
+      border-bottom-color: var(--border);
+    }
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+    .nav__brand {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      font-size: 16px;
+      color: var(--text);
+    }
+    .nav__brand .dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-right: 8px;
+      vertical-align: middle;
+      transform: translateY(-2px);
+    }
+    .nav__menu {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+      margin: 0; padding: 0;
+    }
+    .nav__menu a {
+      font-size: 14px;
+      color: var(--text-2);
+      transition: color 0.18s ease;
+      position: relative;
+    }
+    .nav__menu a:hover { color: var(--text); }
+    .nav__menu a.is-active { color: var(--accent); }
+    .nav__menu a.is-active::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0;
+      bottom: -8px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+    .nav__cta {
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff !important;
+      font-size: 13px;
+      font-weight: 500;
+      transition: transform 0.15s ease, background 0.2s ease;
+    }
+    .nav__cta:hover { background: var(--accent-soft); transform: translateY(-1px); }
+
+    .nav__toggle {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--border);
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav__toggle span {
+      display: block;
+      width: 16px; height: 1.5px;
+      background: var(--text);
+      position: relative;
+    }
+    .nav__toggle span::before,
+    .nav__toggle span::after {
+      content: "";
+      position: absolute;
+      left: 0; width: 16px; height: 1.5px;
+      background: var(--text);
+    }
+    .nav__toggle span::before { top: -5px; }
+    .nav__toggle span::after  { top:  5px; }
+
+    @media (max-width: 760px) {
+      .nav__menu { display: none; }
+      .nav__toggle { display: inline-flex; }
+      .nav__menu.is-open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 68px; left: 0; right: 0;
+        background: var(--bg-soft);
+        border-bottom: 1px solid var(--border);
+        padding: 20px var(--pad-x);
+        gap: 18px;
+      }
+      .nav__menu.is-open a.is-active::after { display: none; }
+      .nav__cta { align-self: flex-start; }
+    }
+
+    /* =========================================================
+       Hero
+       ========================================================= */
+    .hero {
+      padding-top: clamp(48px, 8vw, 96px);
+      padding-bottom: clamp(64px, 9vw, 120px);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -120px; right: -180px;
+      width: 520px; height: 520px;
+      background: radial-gradient(closest-side, rgba(31, 58, 95, 0.06), transparent 70%);
+      filter: blur(20px);
+      pointer-events: none;
+    }
+    .hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-en);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 22px;
+    }
+    .hero__eyebrow::before {
+      content: "";
+      width: 24px; height: 1px;
+      background: var(--text-3);
+    }
+    .hero__title {
+      font-size: clamp(34px, 5.4vw, 60px);
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      font-weight: 600;
+      margin: 0 0 24px;
+      color: var(--text);
+      max-width: 880px;
+    }
+    .hero__title em {
+      font-style: normal;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .hero__lead {
+      font-size: clamp(15px, 1.4vw, 17px);
+      color: var(--text-2);
+      max-width: 620px;
+      margin: 0 0 36px;
+    }
+    .hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 22px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      border: 1px solid transparent;
+    }
+    .btn--primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn--primary:hover { background: var(--accent-soft); transform: translateY(-1px); }
+    .btn--ghost {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn--ghost:hover { background: var(--surface); border-color: var(--text-3); }
+    .btn .arrow {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+    .btn:hover .arrow { transform: translateX(3px); }
+
+    .hero__meta {
+      margin-top: 48px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px 56px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+    .hero__meta dt {
+      font-family: var(--font-en);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 6px;
+    }
+    .hero__meta dd {
+      margin: 0;
+      font-size: 15px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* =========================================================
+       Section header
+       ========================================================= */
+    .section__head {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 48px;
+      align-items: baseline;
+      margin-bottom: 56px;
+    }
+    .section__num {
+      font-family: var(--font-en);
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section__num::before {
+      content: "";
+      width: 10px; height: 1px;
+      background: var(--text-3);
+    }
+    .section__title {
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin: 0;
+      color: var(--text);
+    }
+    .section__title small {
+      display: block;
+      font-family: var(--font-en);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-3);
+      letter-spacing: 0.04em;
+      margin-top: 8px;
+    }
+    @media (max-width: 720px) {
+      .section__head { grid-template-columns: 1fr; gap: 18px; margin-bottom: 36px; }
+    }
+
+    /* =========================================================
+       About
+       ========================================================= */
+    .about {
+      background: var(--bg-soft);
+      border-top: 1px solid var(--border-soft);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .about__grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .about__lead {
+      font-size: clamp(20px, 2vw, 26px);
+      line-height: 1.55;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      font-weight: 500;
+      margin: 0 0 24px;
+    }
+    .about__body p {
+      color: var(--text-2);
+      font-size: 15.5px;
+      margin: 0 0 14px;
+    }
+    .about__highlights {
+      list-style: none;
+      padding: 0; margin: 0;
+      display: grid;
+      gap: 12px;
+    }
+    .about__highlights li {
+      background: var(--surface);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+    .about__highlights .num {
+      font-family: var(--font-en);
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .about__highlights .label {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.5;
+    }
+    @media (max-width: 880px) {
+      .about__grid { grid-template-columns: 1fr; gap: 36px; }
+    }
+
+    /* =========================================================
+       Timeline / List entries
+       ========================================================= */
+    .entry {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 48px;
+      padding: 28px 0;
+      border-top: 1px solid var(--border);
+    }
+    .entry:first-child { border-top: 1px solid var(--border); }
+    .entry__period {
+      font-family: var(--font-en);
+      font-size: 13px;
+      color: var(--text-3);
+      letter-spacing: 0.02em;
+      padding-top: 6px;
+    }
+    .entry__period .place {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--font-kr);
+      font-size: 12px;
+      color: var(--text-3);
+    }
+    .entry__title {
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin: 0 0 4px;
+      color: var(--text);
+    }
+    .entry__org {
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .entry__org::before {
+      content: "";
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: inline-block;
+    }
+    .entry__list {
+      margin: 0; padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+    .entry__list li {
+      position: relative;
+      padding-left: 18px;
+      color: var(--text-2);
+      font-size: 15px;
+    }
+    .entry__list li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 13px;
+      width: 6px; height: 1px;
+      background: var(--text-3);
+    }
+    .entry__list strong { color: var(--text); font-weight: 600; }
+    @media (max-width: 720px) {
+      .entry { grid-template-columns: 1fr; gap: 12px; padding: 22px 0; }
+      .entry__period { padding-top: 0; }
+    }
+
+    /* =========================================================
+       Projects
+       ========================================================= */
+    .projects {
+      background: var(--bg-soft);
+      border-top: 1px solid var(--border-soft);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .projects__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .project {
+      background: var(--surface);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .project::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .project:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--border);
+    }
+    .project:hover::before { opacity: 1; }
+    .project__tag {
+      font-family: var(--font-en);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-bg);
+      padding: 5px 10px;
+      border-radius: 999px;
+      align-self: flex-start;
+    }
+    .project__title {
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+      margin: 0;
+      color: var(--text);
+    }
+    .project__desc {
+      color: var(--text-2);
+      font-size: 14.5px;
+      line-height: 1.6;
+      margin: 0;
+      flex-grow: 1;
+    }
+    .project__meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-soft);
+      font-family: var(--font-en);
+      font-size: 12px;
+      color: var(--text-3);
+    }
+    .project__meta .org { color: var(--text); font-weight: 500; font-family: var(--font-kr); }
+    @media (max-width: 960px) { .projects__grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) { .projects__grid { grid-template-columns: 1fr; } }
+
+    /* =========================================================
+       Awards
+       ========================================================= */
+    .awards__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .award {
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      gap: 18px;
+      padding: 22px 24px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      align-items: center;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .award:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .award__icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: var(--accent-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+    }
+    .award__icon svg { width: 22px; height: 22px; }
+    .award__text { display: flex; flex-direction: column; gap: 2px; }
+    .award__title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+    }
+    .award__org {
+      font-size: 13px;
+      color: var(--text-2);
+    }
+    .award__note {
+      font-size: 12.5px;
+      color: var(--text-3);
+      margin-top: 4px;
+    }
+    .award__period {
+      font-family: var(--font-en);
+      font-size: 12px;
+      color: var(--text-3);
+      white-space: nowrap;
+    }
+    .award--highlight {
+      background: linear-gradient(180deg, var(--accent-bg) 0%, var(--surface) 60%);
+      border-color: var(--accent);
+    }
+    .award--highlight .award__icon {
+      background: var(--accent);
+      color: #fff;
+    }
+    @media (max-width: 800px) { .awards__grid { grid-template-columns: 1fr; } }
+    @media (max-width: 480px) {
+      .award { grid-template-columns: 44px 1fr; }
+      .award__period { grid-column: 2 / 3; }
+    }
+
+    /* =========================================================
+       Skills
+       ========================================================= */
+    .skills {
+      background: var(--bg-soft);
+      border-top: 1px solid var(--border-soft);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .skills__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+    }
+    .skill-card__label {
+      font-family: var(--font-en);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 8px;
+    }
+    .skill-card__title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin: 0 0 22px;
+      color: var(--text);
+    }
+    .skill-card ul {
+      list-style: none;
+      margin: 0; padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .skill-card li {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: var(--surface-alt);
+      color: var(--text-2);
+      font-size: 13.5px;
+      border: 1px solid var(--border-soft);
+      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    }
+    .skill-card li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    @media (max-width: 880px) { .skills__grid { grid-template-columns: 1fr; gap: 16px; } }
+
+    /* =========================================================
+       Languages
+       ========================================================= */
+    .languages {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .language {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      text-align: left;
+    }
+    .language__label {
+      font-family: var(--font-en);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 8px;
+    }
+    .language__score {
+      font-family: var(--font-en);
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .language__meta {
+      font-family: var(--font-en);
+      font-size: 12px;
+      color: var(--text-3);
+    }
+    @media (max-width: 720px) { .languages { grid-template-columns: 1fr; } }
+
+    /* =========================================================
+       Contact
+       ========================================================= */
+    .contact {
+      background: linear-gradient(180deg, var(--bg) 0%, var(--surface-alt) 100%);
+      text-align: left;
+    }
+    .contact__panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: clamp(36px, 5vw, 64px);
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 56px;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+    .contact__heading {
+      font-size: clamp(28px, 3.4vw, 40px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin: 0 0 16px;
+    }
+    .contact__heading em { font-style: normal; color: var(--accent); }
+    .contact__sub {
+      color: var(--text-2);
+      font-size: 15.5px;
+      margin: 0 0 28px;
+    }
+    .contact__list {
+      list-style: none;
+      margin: 0; padding: 0;
+      display: grid;
+      gap: 14px;
+    }
+    .contact__list li {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 18px 22px;
+      background: var(--bg-soft);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius);
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .contact__list li:hover {
+      border-color: var(--accent);
+      background: var(--surface);
+    }
+    .contact__list a { display: block; }
+    .contact__icon {
+      width: 36px; height: 36px;
+      background: var(--accent-bg);
+      color: var(--accent);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .contact__icon svg { width: 18px; height: 18px; }
+    .contact__label {
+      font-family: var(--font-en);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      display: block;
+      margin-bottom: 2px;
+    }
+    .contact__value {
+      font-size: 15px;
+      color: var(--text);
+      font-weight: 500;
+    }
+    @media (max-width: 880px) {
+      .contact__panel { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    /* =========================================================
+       Footer
+       ========================================================= */
+    .footer {
+      padding: 48px 0 64px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .footer__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      color: var(--text-3);
+      font-size: 13px;
+      font-family: var(--font-en);
+    }
+    .footer__brand { color: var(--text-2); font-weight: 500; }
+
+    /* =========================================================
+       Animations
+       ========================================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* =========================================================
+       Print (optional clean print)
+       ========================================================= */
+    @media print {
+      .nav, .hero__actions, .footer { display: none; }
+      body { background: #fff; }
+      section { padding: 24px 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ============== NAV ============== -->
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="#top" class="nav__brand"><span class="dot"></span>Dongyoung Kim</a>
+      <button class="nav__toggle" aria-label="메뉴 열기" id="navToggle"><span></span></button>
+      <ul class="nav__menu" id="navMenu">
+        <li><a href="#about" data-link>About</a></li>
+        <li><a href="#experience" data-link>Experience</a></li>
+        <li><a href="#projects" data-link>Projects</a></li>
+        <li><a href="#awards" data-link>Awards</a></li>
+        <li><a href="#skills" data-link>Skills</a></li>
+        <li><a href="#contact" class="nav__cta">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============== HERO ============== -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero__eyebrow reveal">Portfolio · 2026</div>
+        <h1 class="hero__title reveal">
+          고객 사용 경험 개선을<br />
+          <em>최우선으로 생각하는</em> 기획자,<br />
+          김동영입니다.
+        </h1>
+        <p class="hero__lead reveal">
+          제품 기획 인턴과 서비스 개발 프로젝트를 통해 사용자 중심의 기획 역량을 쌓았으며,
+          고객에게 가치 있는 경험을 선사하는 전문가로 성장하고 싶습니다.
+        </p>
+        <div class="hero__actions reveal">
+          <a href="#contact" class="btn btn--primary">
+            함께 일하기 <span class="arrow">→</span>
+          </a>
+          <a href="#projects" class="btn btn--ghost">
+            프로젝트 보기
+          </a>
+        </div>
+
+        <dl class="hero__meta reveal">
+          <div>
+            <dt>Role</dt>
+            <dd>Product · Service Planner</dd>
+          </div>
+          <div>
+            <dt>Education</dt>
+            <dd>한국외국어대학교 · AI융합전공</dd>
+          </div>
+          <div>
+            <dt>Recent</dt>
+            <dd>삼성전자 · 네이버제트</dd>
+          </div>
+          <div>
+            <dt>Based in</dt>
+            <dd>Seoul, Korea</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ============== ABOUT ============== -->
+    <section class="about" id="about">
+      <div class="container">
+        <header class="section__head reveal">
+          <div class="section__num">01 — About</div>
+          <h2 class="section__title">
+            데이터로 사용자를 이해하고,
+            <small>기획으로 가치를 전달합니다.</small>
+          </h2>
+        </header>
+
+        <div class="about__grid">
+          <div class="reveal">
+            <p class="about__lead">
+              사람의 행동에는 늘 이유가 있다고 믿습니다.
+              그 이유를 발견해 더 나은 경험으로 연결하는 일을 좋아합니다.
+            </p>
+            <div class="about__body">
+              <p>
+                영어통번역과 AI융합을 함께 전공하며 사람과 기술 사이를 잇는 언어를 익혔습니다.
+                삼성전자 상품 기획 인턴에서는 2030 신혼 가구의 페인 포인트를 분석해
+                Bespoke AI 콤보 신규 POD 기획안을 제안했고, 내부 PT에서 우수 기획으로 선정되었습니다.
+              </p>
+              <p>
+                네이버제트 ZEPETO CX 운영 인턴으로 일하며 VOC 데이터베이스를 직접 구축해
+                대응 시간을 35% 단축했고, 모방 신고 검수와 수익금 정산 프로세스 개선안을 제안해
+                각각 불만 문의 63.6% 감소, 수동 검수 70% 감소라는 성과를 만들었습니다.
+              </p>
+              <p>
+                데이터 분석 학회의 학회장으로 활동하며 학회원 이탈률을 30%에서 10%로 낮췄고,
+                LG Aimers 해커톤에서는 740팀 중 상위 1.5%의 성과를 냈습니다.
+                숫자 뒤의 사람을 보고, 디테일을 끝까지 챙기는 기획자로 성장하고 있습니다.
+              </p>
+            </div>
+          </div>
+          <ul class="about__highlights reveal">
+            <li>
+              <span class="num">70%</span>
+              <span class="label">네이버제트 · 수익금 정산 수동 검수 감소 (월 500건 → 150건)</span>
+            </li>
+            <li>
+              <span class="num">63.6%</span>
+              <span class="label">네이버제트 · 모방 신고 불만 문의 감소 (일 11건 → 4건)</span>
+            </li>
+            <li>
+              <span class="num">1.5%</span>
+              <span class="label">LG Aimers 5th Hackathon · 12 / 740</span>
+            </li>
+            <li>
+              <span class="num">3.88</span>
+              <span class="label">학사 GPA · 한국외대 영어통번역 / AI융합 이중전공</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== EXPERIENCE ============== -->
+    <section id="experience">
+      <div class="container">
+        <header class="section__head reveal">
+          <div class="section__num">02 — Experience</div>
+          <h2 class="section__title">
+            기획·운영의 현장에서 쌓아온 경험
+            <small>Internships and on-campus activities.</small>
+          </h2>
+        </header>
+
+        <div class="reveal">
+
+          <article class="entry">
+            <div class="entry__period">
+              2025.09 — 2025.12
+              <span class="place">성남시 분당구</span>
+            </div>
+            <div>
+              <h3 class="entry__title">CX 운영 인턴</h3>
+              <div class="entry__org">네이버제트 · ZEPETO</div>
+              <ul class="entry__list">
+                <li>글로벌 메타버스 플랫폼 <strong>ZEPETO 크리에이터 CX 문의 대응</strong> (Zendesk) — 외주 CS의 답변 범위를 넘어선 고난도 이슈의 최종 답변 가이드 작성·전달</li>
+                <li><strong>VOC 데이터베이스 자체 구축</strong> — 유사 문의 탐색 시간 평균 20분 → 13분(<strong>35% 단축</strong>), 일일 대응 시간 3시간 20분 → 2시간 10분(<strong>1시간 10분 절감</strong>)</li>
+                <li><strong>모방 신고 아이템 검수 AI 프로세스 개선안 제안</strong> — AI 이미지 유사도 분석 + 임계치 기반 2차 검수 설계로 일평균 불만 문의 11건 → 4건(<strong>63.6% 감소</strong>)</li>
+                <li><strong>수익금 정산 검수 프로세스 개선안 제안</strong> — 오탐 80%의 원인(동일 크리에이터 복수 계정)을 데이터로 진단, '계정주 동일성 검증 단계' 로직 제안해 월 수동 검수 500건 → 150건(<strong>70% 감소</strong>), 정산 일정 정시 준수</li>
+                <li><strong>Roblox 경쟁사 벤치마킹 조사</strong> — 콘텐츠 포지셔닝 비교 분석 후 충성 유저 확보를 위한 다인 참여·솔로 플레이형 게임 콘텐츠 도입 기획안 제안</li>
+                <li>유저/크리에이터 <strong>심층 인터뷰</strong> 질문 설계·구글폼 모집·일정 조율·녹취 요약 + <strong>후임 인턴 온보딩 매뉴얼</strong>(PPT + 프로세스 시연 영상) 제작</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="entry">
+            <div class="entry__period">
+              2025.06 — 2025.08
+              <span class="place">수원시 영통구</span>
+            </div>
+            <div>
+              <h3 class="entry__title">리빙제품 상품 기획 인턴</h3>
+              <div class="entry__org">삼성전자 · Samsung Electronics</div>
+              <ul class="entry__list">
+                <li>2030 예비 신혼 가구를 타깃으로 <strong>Bespoke AI 콤보 신규 POD 발굴 기획 프로젝트</strong> 수행</li>
+                <li>핵심 Pain Point를 정의하고 이를 해결하는 신규 서비스 기획안 제안</li>
+                <li>내부 PT에서 <strong>우수 기획안</strong>으로 선정</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="entry">
+            <div class="entry__period">
+              2024.03 — 2025.06
+              <span class="place">한국외국어대학교</span>
+            </div>
+            <div>
+              <h3 class="entry__title">교내 학회 활동 · 학회장</h3>
+              <div class="entry__org">DAT 데이터 분석 학회</div>
+              <ul class="entry__list">
+                <li>학회원으로 프로젝트 참여 및 논문 리뷰 발표 진행</li>
+                <li>학회장 부임 후 학회 프로그램을 전면 개편해 <strong>이탈률 30% → 10%</strong>로 감소</li>
+                <li>신규 커리큘럼·세션 설계, 출석/과제 운영 체계 정비</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="entry">
+            <div class="entry__period">
+              2022.09 — 2023.06
+              <span class="place">한국외국어대학교</span>
+            </div>
+            <div>
+              <h3 class="entry__title">근로 장학생</h3>
+              <div class="entry__org">학과 사무실</div>
+              <ul class="entry__list">
+                <li>학생 및 교수진 문의사항 응대 및 행정 업무 보조</li>
+                <li><strong>응대 처리 효율화</strong>: 빈번한 문의 사항 매뉴얼화로 Complaint 50% 감소</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="entry">
+            <div class="entry__period">
+              2021.12 — 2022.03
+              <span class="place">서울 광진구</span>
+            </div>
+            <div>
+              <h3 class="entry__title">홀 서비스 아르바이트</h3>
+              <div class="entry__org">이공족발 건대점</div>
+              <ul class="entry__list">
+                <li>홀 서빙 및 카운터 응대 업무 수행</li>
+                <li><strong>고객 불만 해결</strong>: 매장 VOC와 네이버 리뷰를 분석해 개선책 제시, 불만 리뷰 비율 10%p 감소</li>
+              </ul>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== PROJECTS ============== -->
+    <section class="projects" id="projects">
+      <div class="container">
+        <header class="section__head reveal">
+          <div class="section__num">03 — Projects</div>
+          <h2 class="section__title">
+            가설을 세우고, 만들고, 다시 학습합니다
+            <small>Selected planning &amp; data projects.</small>
+          </h2>
+        </header>
+
+        <div class="projects__grid">
+
+          <article class="project reveal">
+            <span class="project__tag">App · Planning</span>
+            <h3 class="project__title">사용자 맞춤 음식 추천 서비스</h3>
+            <p class="project__desc">
+              사용자의 입맛·상황·예산을 반영한 식사 추천 앱 서비스를 기획하고 개발 사이클에 참여했습니다.
+              사용자 인터뷰 → 페르소나 → 정보 구조 → 와이어프레임으로 이어지는 기획 프로세스를 직접 설계했습니다.
+            </p>
+            <div class="project__meta">
+              <span class="org">DAT 데이터 분석 학회</span>
+              <span>2024.10 — 2024.11</span>
+            </div>
+          </article>
+
+          <article class="project reveal">
+            <span class="project__tag">Web · Service Planning</span>
+            <h3 class="project__title">AI 기반 모닝 브리핑 서비스</h3>
+            <p class="project__desc">
+              직장인의 효율적인 업무 시작을 돕는 AI 기반 모닝 브리핑 웹 서비스를 기획했습니다.
+              뉴스·일정·이메일을 한 번에 요약 제공하는 컨셉으로, 타깃 정의부터 핵심 기능 우선순위까지 정리했습니다.
+            </p>
+            <div class="project__meta">
+              <span class="org">DAT 데이터 분석 학회</span>
+              <span>2024.04 — 2024.05</span>
+            </div>
+          </article>
+
+          <article class="project reveal">
+            <span class="project__tag">Research · Industry</span>
+            <h3 class="project__title">AI 기술이 유통 산업에 미치는 영향</h3>
+            <p class="project__desc">
+              아마존 고(Amazon Go) 사례를 중심으로 AI 기술이 오프라인 유통 산업의 운영 방식과 고객 경험을
+              어떻게 재정의하는지 연구한 산업 혁신 사례 보고서입니다.
+            </p>
+            <div class="project__meta">
+              <span class="org">AI 마케팅 수업</span>
+              <span>2023.09 — 2023.11</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== AWARDS ============== -->
+    <section id="awards">
+      <div class="container">
+        <header class="section__head reveal">
+          <div class="section__num">04 — Awards &amp; Competitions</div>
+          <h2 class="section__title">
+            성과로 검증된 문제 해결 경험
+            <small>Hackathons, contests, and competitive results.</small>
+          </h2>
+        </header>
+
+        <div class="awards__grid reveal">
+
+          <div class="award award--highlight">
+            <div class="award__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V4h12v5a6 6 0 0 1-12 0z"/><path d="M4 6H2v2a4 4 0 0 0 4 4"/><path d="M20 6h2v2a4 4 0 0 1-4 4"/><path d="M9 18h6v3H9z"/></svg>
+            </div>
+            <div class="award__text">
+              <span class="award__title">LG Aimers 5th Hackathon · 상위 1.5%</span>
+              <span class="award__org">LG AI 연구원 · 제품 이상 여부 판별 모델 개발</span>
+              <span class="award__note">Private Ranking 12 / 740</span>
+            </div>
+            <span class="award__period">2024.08</span>
+          </div>
+
+          <div class="award">
+            <div class="award__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V4h12v5a6 6 0 0 1-12 0z"/><path d="M4 6H2v2a4 4 0 0 0 4 4"/><path d="M20 6h2v2a4 4 0 0 1-4 4"/><path d="M9 18h6v3H9z"/></svg>
+            </div>
+            <div class="award__text">
+              <span class="award__title">LG Aimers 4th Hackathon · 상위 3.5%</span>
+              <span class="award__org">LG AI 연구원 · MQL 데이터 기반 B2B 영업 예측 모델</span>
+              <span class="award__note">Private Ranking 31 / 844</span>
+            </div>
+            <span class="award__period">2024.02</span>
+          </div>
+
+          <div class="award">
+            <div class="award__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 14l-2 8 5-3 5 3-2-8"/></svg>
+            </div>
+            <div class="award__text">
+              <span class="award__title">날씨 빅데이터 콘테스트 · 우수상</span>
+              <span class="award__org">기상청</span>
+              <span class="award__note">기상현상과 화재발생에 대한 상관분석</span>
+            </div>
+            <span class="award__period">2024.06</span>
+          </div>
+
+          <div class="award">
+            <div class="award__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 14l-2 8 5-3 5 3-2-8"/></svg>
+            </div>
+            <div class="award__text">
+              <span class="award__title">AI 서비스 아이디어 해커톤 · 장려상</span>
+              <span class="award__org">용인시</span>
+              <span class="award__note">디지털 소외계층을 위한 인공지능 서비스 아이디어 제안</span>
+            </div>
+            <span class="award__period">2024.10</span>
+          </div>
+
+          <div class="award">
+            <div class="award__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14l-7-4-7 4V6a2 2 0 0 1 2-2h2"/><path d="M9 8h6"/></svg>
+            </div>
+            <div class="award__text">
+              <span class="award__title">BSS 마케팅 아이디어 공모전</span>
+              <span class="award__org">LG 에너지솔루션</span>
+              <span class="award__note">대학생·일반 대상 BSS 전기이륜차 마케팅 제안서</span>
+            </div>
+            <span class="award__period">2024.07</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SKILLS + EDUCATION ============== -->
+    <section class="skills" id="skills">
+      <div class="container">
+        <header class="section__head reveal">
+          <div class="section__num">05 — Skills &amp; Education</div>
+          <h2 class="section__title">
+            기획자에게 필요한 도구와 언어
+            <small>Hard skills, soft skills, tools and languages.</small>
+          </h2>
+        </header>
+
+        <div class="skills__grid">
+          <div class="skill-card reveal">
+            <div class="skill-card__label">01</div>
+            <h3 class="skill-card__title">Hard Skills</h3>
+            <ul>
+              <li>데이터 분석</li>
+              <li>Python</li>
+              <li>SQL</li>
+              <li>IT 트렌드 파악</li>
+              <li>자료 구조화</li>
+            </ul>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-card__label">02</div>
+            <h3 class="skill-card__title">Soft Skills</h3>
+            <ul>
+              <li>커뮤니케이션</li>
+              <li>논리적 사고</li>
+              <li>리더십</li>
+              <li>스케줄링</li>
+              <li>꼼꼼함</li>
+            </ul>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-card__label">03</div>
+            <h3 class="skill-card__title">Tools</h3>
+            <ul>
+              <li>Notion</li>
+              <li>Slack</li>
+              <li>Google Sheet</li>
+              <li>Power Point</li>
+              <li>Excel</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="reveal" style="margin-top: 64px;">
+          <header class="section__head" style="margin-bottom: 32px;">
+            <div class="section__num">— Languages</div>
+            <h2 class="section__title" style="font-size: clamp(20px, 2.4vw, 26px);">어학 점수</h2>
+          </header>
+          <div class="languages">
+            <div class="language">
+              <div class="language__label">TOEIC</div>
+              <div class="language__score">915</div>
+              <div class="language__meta">2025.02.23</div>
+            </div>
+            <div class="language">
+              <div class="language__label">TOSS</div>
+              <div class="language__score">AL</div>
+              <div class="language__meta">2025.03.09</div>
+            </div>
+            <div class="language">
+              <div class="language__label">OPIc</div>
+              <div class="language__score">IH</div>
+              <div class="language__meta">2025.08.03</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal" style="margin-top: 64px;">
+          <header class="section__head" style="margin-bottom: 24px;">
+            <div class="section__num">— Education</div>
+            <h2 class="section__title" style="font-size: clamp(20px, 2.4vw, 26px);">학력</h2>
+          </header>
+          <article class="entry" style="border-top: 1px solid var(--border);">
+            <div class="entry__period">
+              2020.03 — 2026.02
+              <span class="place">학사 · GPA 3.88 / 4.5</span>
+            </div>
+            <div>
+              <h3 class="entry__title">한국외국어대학교</h3>
+              <div class="entry__org">영어통번역학 전공 · AI융합전공 이중전공</div>
+              <ul class="entry__list">
+                <li>언어와 AI 두 영역을 연결하는 융합 학습 — 사람과 기술의 접점에서 가치를 발견하기 위한 토대</li>
+              </ul>
+            </div>
+          </article>
+          <article class="entry">
+            <div class="entry__period">
+              2015.03 — 2018.02
+            </div>
+            <div>
+              <h3 class="entry__title">반포고등학교</h3>
+              <div class="entry__org">서울 서초구</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== CONTACT ============== -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <div class="contact__panel reveal">
+          <div>
+            <h2 class="contact__heading">
+              <em>좋은 기획</em>은<br />
+              좋은 대화에서 시작합니다.
+            </h2>
+            <p class="contact__sub">
+              새로운 기회나 협업, 혹은 가벼운 커피챗 모두 환영합니다.
+              아래의 채널로 편하게 연락 주세요.
+            </p>
+            <a href="mailto:dyk9916@naver.com" class="btn btn--primary">
+              이메일 보내기 <span class="arrow">→</span>
+            </a>
+          </div>
+          <ul class="contact__list">
+            <li>
+              <span class="contact__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              </span>
+              <a href="mailto:dyk9916@naver.com">
+                <span class="contact__label">Email</span>
+                <span class="contact__value">dyk9916@naver.com</span>
+              </a>
+            </li>
+            <li>
+              <span class="contact__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V21a1 1 0 0 1-1.11 1A19 19 0 0 1 2 4.11 1 1 0 0 1 3 3h4.09a1 1 0 0 1 1 .75l1 4a1 1 0 0 1-.27 1L7.21 10.21a16 16 0 0 0 6.58 6.58l1.46-1.61a1 1 0 0 1 1-.27l4 1a1 1 0 0 1 .75 1z"/></svg>
+              </span>
+              <a href="tel:+821047907697">
+                <span class="contact__label">Phone</span>
+                <span class="contact__value">+82 10-4790-7697</span>
+              </a>
+            </li>
+            <li>
+              <span class="contact__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </span>
+              <span style="display:block;">
+                <span class="contact__label">Location</span>
+                <span class="contact__value">서울 강동구</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============== FOOTER ============== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">© 2026 Dongyoung Kim · Portfolio</div>
+      <div>Designed &amp; built with care.</div>
+    </div>
+  </footer>
+
+  <script>
+    // ===== Scroll-triggered reveal =====
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    // ===== Sticky nav shadow =====
+    const nav = document.getElementById('nav');
+    const onScroll = () => {
+      if (window.scrollY > 8) nav.classList.add('is-scrolled');
+      else nav.classList.remove('is-scrolled');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // ===== Active section highlight =====
+    const sections = ['about','experience','projects','awards','skills','contact']
+      .map(id => document.getElementById(id))
+      .filter(Boolean);
+    const links = Array.from(document.querySelectorAll('[data-link]'));
+    const linkMap = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+
+    const sectionObs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const link = linkMap.get(entry.target.id);
+        if (!link) return;
+        if (entry.isIntersecting) {
+          links.forEach(l => l.classList.remove('is-active'));
+          link.classList.add('is-active');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    sections.forEach(s => sectionObs.observe(s));
+
+    // ===== Mobile nav toggle =====
+    const menu = document.getElementById('navMenu');
+    const toggle = document.getElementById('navToggle');
+    toggle.addEventListener('click', () => {
+      menu.classList.toggle('is-open');
+    });
+    menu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => menu.classList.remove('is-open'));
+    });
+  </script>
+</body>
+</html>
